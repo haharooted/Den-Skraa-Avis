@@ -1,1 +1,1 @@
-# Den-Skraa-Avis
+# Den Skrå Avis / The Skewed Ebay
