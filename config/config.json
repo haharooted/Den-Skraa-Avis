@@ -3,12 +3,12 @@
     "authentication": {
         "type": "default",
         "options": {
-            "userName": "username", 
-            "password": "password" 
+            "userName": "test", 
+            "password": "test" 
         }
     },
     "options": {
         "encrypt": true,
         "database": "varmdatabase"
     }
-}  
+} 
