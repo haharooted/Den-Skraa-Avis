@@ -1,6 +1,7 @@
 
 # Login oplysninger i database config filen
-database/config.json
+config/config.json
+.idea
 
 # Logs
 logs

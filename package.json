@@ -1,0 +1,19 @@
+{
+  "name": "den-skraa-avis",
+  "version": "1.0.0",
+  "description": "Den Skrå Avis!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k3ring/Den-Skraa-Avis.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/k3ring/Den-Skraa-Avis/issues"
+  },
+  "homepage": "https://github.com/k3ring/Den-Skraa-Avis#readme"
+}
