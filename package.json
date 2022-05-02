@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/k3ring/Den-Skraa-Avis#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "tedious": "^14.4.0"
   }
 }

@@ -1,7 +1,7 @@
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request
 
-const config = require('./config.json')
+const config = require('../config/config.json')
 var connection = new Connection(config)
 
 connection.on('connect', function(err){
@@ -18,7 +18,7 @@ connection.connect()
 
 
 function executeSQL(){
-    request = new Request("SELECT * FROM production.brands", function(err){
+    request = new Request("SELECT * FROM titleauthor", function(err){
     if (err){
         console.log(err)}})
 
