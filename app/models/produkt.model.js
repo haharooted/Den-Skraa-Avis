@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     billedeUrl: {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: false
     }
   });
 

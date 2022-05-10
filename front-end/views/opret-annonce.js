@@ -23,5 +23,5 @@ document.addEventListener("DOMContentLoaded", (e) => {
       });
   }
   const bruger = JSON.parse(localStorage.getItem("bruger"));
-  document.getElementById("oprettetAfId").value = bruger.id;
+  document.getElementById("id").value = bruger.id;
 });

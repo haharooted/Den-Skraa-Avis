@@ -28,7 +28,7 @@
 <br>
     <form ref='uploadForm' 
       id='uploadForm' 
-      action='http://localhost:1337/opretannonce' 
+      action='http://localhost:1337/api/produkter/' 
       method='post' 
       accept='image/*'
       maxfilesize='10000000'
@@ -72,7 +72,7 @@
           </optgroup>
         </select>
         <br>
-        <input id="oprettetAfId" type="hidden" value="" name="oprettetAfId"/>
+        <input id="id" type="hidden" value="" name="id"/>
         <br>
         <input type="file" name="billedeFil" required/>
         <br>

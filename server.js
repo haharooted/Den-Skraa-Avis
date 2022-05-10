@@ -2,13 +2,16 @@ const express = require("express");
 const cors = require("cors");
 const path = require('path')
 const app = express();
+const fileUpload = require("express-fileupload");
+
 
 var corsOptions = {
-  origin: "http://localhost:1337"
+  origin: "*"
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());  
+app.use(fileUpload());
 app.use(express.urlencoded({ extended: true })); 
 
 

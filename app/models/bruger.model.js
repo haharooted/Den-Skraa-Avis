@@ -10,19 +10,23 @@ module.exports = (sequelize, Sequelize) => {
     },
     email: {
       type: Sequelize.STRING,
-      isEmail: true
+      isEmail: true,
+      allowNull: false
     },
     password: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
       /*set(value) {
         this.setDataValue('password', hash(value));
       }*/
     },
     navn: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
     },
     telefon: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
     },
     is_Guldbruger: {
       type: Sequelize.BOOLEAN,
@@ -32,7 +36,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE,
       get(dato) {
         let datoToFix = this.getDataValue('createdAt')
-        let formattedDato = datoToFix.getFullYear()+'-'+datoToFix.getDate()+'-'+(datoToFix.getMonth()+1);
+        let formattedDato = datoToFix.getDate()+'-'+(datoToFix.getMonth()+1)+'-'+datoToFix.getFullYear();
         let tid = datoToFix.getHours() + ":" + datoToFix.getMinutes() + ":" + datoToFix.getSeconds();
         let formattedDateTime = formattedDato+' '+tid;
         return formattedDateTime;

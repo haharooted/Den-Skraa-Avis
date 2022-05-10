@@ -5,25 +5,24 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Bruger
 exports.createBruger = (req, res) => {
   // Validate request
-  if (!req.body) {
+  /*if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
-  }
-
-  
+  }*/
   const bruger = {
     email: req.body.email,
     password: req.body.password,
     navn: req.body.navn,
     telefon: req.body.telefon
   };
-
+  console.log("ny bruger: " + bruger)
     // Save Produkt in the database
     Bruger.create(bruger)
     .then(data => {
       res.send(data);
+      console.log("save user: " + data)
     })
     .catch(err => {
       res.status(500).send({
@@ -165,10 +164,11 @@ exports.updateBruger = (req, res) => {
     email: req.body.email,
     password: req.body.password,
     navn: req.body.navn,
-    telefon: req.body.telefon
+    telefon: req.body.telefon,
   };
   
-  Bruger.update(req.body, {
+  let id = req.body.id
+  Bruger.update(bruger, {
     where: { id: id }
   })
   .then(num => {
