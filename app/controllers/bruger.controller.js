@@ -127,37 +127,6 @@ exports.deleteBrugerWithEmail = (req, res) => {
 };
 
 // Update a Bruger by the id in the request
-exports.brugerFollowProdukt = (req, res) => {
-  const inputBrugerId = req.params.brugerId
-  const inputProduktId = req.params.produktId
-
-
-  brugere2produkter.create({
-    brugerId: inputBrugerId,
-    produktId: inputProduktId
-  })
-
-
-  Bruger.update(req.body, {
-    where: { id: id }
-  })
-  .then(num => {
-    if (num == 1) {
-      res.send({
-        message: "Bruger blev opdateret."
-      });
-    } else {
-      res.send({
-        message: `Kan ikke opdatere bruger med id=${id}`
-      });
-    }
-  })
-  .catch(err => {
-    res.status(500).send({
-      message: "Fejl ved at opdatere id=" + id
-    });
-  });
-};
 
 exports.updateBruger = (req, res) => {
   const bruger = {
@@ -185,6 +154,58 @@ exports.updateBruger = (req, res) => {
   .catch(err => {
     res.status(500).send({
       message: "Fejl ved at opdatere id=" + id
+    });
+  });
+};
+
+exports.upgradeBruger = (req, res) => {
+  let id = req.params.id
+  Bruger.update({
+    is_Guldbruger: true
+  }, {
+    where: {id: id }
+  })
+  .then(svar => {
+    if (svar == 1) {
+      res.send({
+        message: "Bruger blev upgraded."
+      });
+    } else {
+      res.send({
+        message: `Kan ikke upgrade bruger med id = ${id}`
+      });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: "Fejl ved at upgrade id=" + id
+    });
+  });
+};
+
+// Downgrade bruger
+exports.degradeBruger = (req, res) => {
+  let id = req.params.id
+  Bruger.update({
+    is_Guldbruger: false
+  }, {
+    where: {id: id }
+  })
+  .then(svar => {
+    console.log(svar)
+    if (svar == 1) {
+      res.send({
+        message: "Bruger blev downgraded."
+      });
+    } else {
+      res.send({
+        message: `Kan ikke downgrade bruger med id = ${id}`
+      });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: "Fejl ved at downgrade id=" + id
     });
   });
 };
@@ -232,8 +253,8 @@ exports.deleteAll = (req, res) => {
 };
 
 // find all published Bruger
-exports.findAllPublished = (req, res) => {
-  Bruger.findAll()//{ where: { published: true } })
+exports.findAllBrugere = (req, res) => {
+  Bruger.findAll()
   .then(data => {
     res.send(data);
   })

@@ -4,10 +4,60 @@ const Op = db.Sequelize.Op;
 const fileUpload = require('express-fileupload');
 const path = require('path');
 const { brugere, produkter } = require("../models");
+const {QueryTypes} = require('sequelize');
 
-// Nyt produkt:
 
-// Create and Save a new Bruger
+
+
+// Follow produkt
+exports.followProdukt = (req, res) => {
+  let brugerId = req.query.brugerId
+  let produktId = req.query.produktId
+  
+  // Indsæt ny relation i db
+  db.sequelize.query(`INSERT INTO brugere2produkters (brugerId, produktId) VALUES (${brugerId}, ${produktId})`, { type: QueryTypes.INSERT })
+  .then(data => {
+    res.send("Du følger nu annoncen!")
+  })
+  .catch(err => {
+    res.send("Der skete en fejl ved at følge annoncen")
+  })
+};
+
+exports.unfollowProdukt = (req, res) => {
+  let brugerId = req.query.brugerId
+  let produktId = req.query.produktId
+  
+  // Indsæt ny relation i db
+  db.sequelize.query(`DELETE FROM brugere2produkters WHERE brugerId = ${brugerId} AND produktId = ${produktId}`, { type: QueryTypes.DELETE })
+  .then(data => {
+    res.send("Du følger nu ikke annoncen mere!")
+  })
+  .catch(err => {
+    res.send("Der skete en fejl ved at unfollow annoncen")
+  })
+};
+
+exports.followedProdukt = (req, res) => {
+  let brugerId = req.params.brugerId
+  
+  // Indsæt query  i db
+  db.sequelize.query(`
+  SELECT *
+  FROM brugere2produkters as bp
+  LEFT JOIN produkts as p
+  on bp.produktId = p.id
+  WHERE bp.brugerId = ${brugerId} 
+  `, { type: QueryTypes.SELECT })
+  .then(data => {
+    res.send(data)
+  })
+  .catch(err => {
+    res.status(401).send("Der skete en fejl ved at fetche brugerens fulgte varer. Ingen fulgte varer?")
+  })
+};
+// Nyt produkt
+// Create and Save a new produkt
 exports.createProdukt = (req, res) => {
   
   let billedeFil = req.files.billedeFil;
@@ -30,7 +80,6 @@ exports.createProdukt = (req, res) => {
   let extension = path.extname(billedeFil.name)
   uploadSti = './front-end/public/uploads/' + md5Hash + extension;
   const billedeUrl = md5Hash + extension
-  console.log(billedeUrl)
   const produkt = {
     titel: req.body.titel,
     pris: req.body.pris,
@@ -38,13 +87,12 @@ exports.createProdukt = (req, res) => {
     billedeUrl: billedeUrl,
   };
   let id = req.body.id
-
-
-      // Flyt billede til uploads folderen (/public/uploads)
-
+  
+  
+  // Flyt billede til uploads folderen (/public/uploads)
+  
   
   // Save Produkt in the database
-  console.log(id)
   Produkt.create({
     titel: produkt.titel, 
     pris: produkt.pris, 
@@ -58,7 +106,7 @@ exports.createProdukt = (req, res) => {
       if (fejl) {
         return res.status(500).send(fejl);
       } else {
-        res.status(200).send(`Annonce med titel: ${data.toJSON().titel} er lagt op!`);
+        res.status(200).send(`Annonce med titel: ${data.titel} er lagt op!`);
       }
     });
   })
@@ -93,7 +141,6 @@ exports.updateProdukt = (req, res) => {
   let extension = path.extname(billedeFil.name)
   uploadSti = './front-end/public/uploads/' + md5Hash + extension;
   const billedeUrl = md5Hash + extension
-  console.log(billedeUrl)
   const produkt = {
     titel: req.body.titel,
     pris: req.body.pris,
@@ -101,14 +148,13 @@ exports.updateProdukt = (req, res) => {
     billedeUrl: billedeUrl,
     id: req.body.id
   };
-
-      // Flyt billede til uploads folderen (/public/uploads)
-
+  
+  // Flyt billede til uploads folderen (/public/uploads)
+  
   
   // Save Produkt in the database
   Produkt.create(produkt)
   .then(data => {
-    console.log("save produkt: " + data)
     billedeFil.mv(uploadSti, function(fejl) {
       if (fejl) {
         return res.status(500).send(fejl);
@@ -239,17 +285,17 @@ exports.delete = (req, res) => {
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Produkt was deleted successfully!"
+        message: "Produkt slettet!"
       });
     } else {
       res.send({
-        message: `Cannot delete Produkt with id=${id}. Maybe Produkt was not found!`
+        message: `Kan ikke slette produkt med id=${id}.`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: "Could not delete Produkt with id=" + id
+      message: "Kunne ikke slette produkt med id=" + id
     });
   });
 };

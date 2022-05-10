@@ -43,24 +43,22 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         )
       }
     )*/
-    fetch(`http://localhost:1337/api/admin/allebrugere`).then(
+    fetch(`http://localhost:1337/api/brugere/findAllBrugere`).then(
     res => {
       res.json().then(
         data => {
           if (data.length > 0) {
             let temp = "";
             data.forEach((bruger) => {
-              let datoDel = bruger.dato.split("-");
-              let datoFormateret = new Date(datoDel[0], datoDel[1] - 1, datoDel[2].substr(0,2));
               temp += `<form ref='uploadForm' 
               id='uploadForm' 
               action='http://localhost:1337/api/admin/opdaterbruger' 
               method='post' 
-              <label> Bruger UUID: ${bruger.uuid}</label>
+              <label> Bruger ID: ${bruger.id}</label>
               <br>
               <label> Bruger guld-status: ${bruger.is_Guldbruger}</label>
               <br>
-              <label> Bruger oprettelsesdato: ${datoFormateret.toLocaleDateString()}</label>
+              <label> Bruger oprettelsesdato: ${bruger.createdAt}</label>
               <br>
               <label for="titel">Navn: </label>
         <br>
@@ -89,20 +87,20 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           <option value="5">Bornholm</option>
         </select>
         <br>
-        <input id="id" type="hidden" value="${bruger.uuid}" name="uuid"/>
+        <input id="id" type="hidden" value="${bruger.id}" name="id"/>
         <br>
         <br>
         <input id="submitknap" type='submit' value='Opdater bruger' />
         <br>
         </form>
-        <a href="http://localhost:1337/api/admin/sletbruger/${bruger.uuid}">
+        <a href="http://localhost:1337/api/brugere/sletbruger/${bruger.id}">
         <button class="sletknap" type="button">Slet bruger</button></a>
         `
         if(bruger.is_Guldbruger) {
-          temp += `<a href="./api/admin/degradeuser/${bruger.uuid}">
+          temp += `<a href="./api/brugere/degradebruger/${bruger.id}">
           <button class="makenormal" type="button">Gør bruger til normal-bruger</button></a>`
         } else {
-          temp += `<a href="./api/admin/upgradeuser/${bruger.uuid}">
+          temp += `<a href="./api/brugere/upgradebruger/${bruger.id}">
           <button class="makegold" type="button">Gør bruger til guld-bruger</button></a>`
         }
 

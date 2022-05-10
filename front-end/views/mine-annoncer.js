@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             data.forEach((annonce) => {
               temp += `<form ref='uploadForm' 
               id='uploadForm' 
-              action='http://localhost:1337/opdaterannonce' 
+              action='http://localhost:1337/api/brugere' 
               method='post' 
               accept='image/*'
               maxfilesize='10000000'
@@ -87,8 +87,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         <br>
         <hr>
     </form>
-    <a href="http://localhost:1337/api/sletAnnonce/${annonce.id}"><button class="sletknap">Slet annoncen</button></a>
-
+    <form>
+    <a href="http://localhost:1337/api/produkter/deleteprodukt/${annonce.id}"><button class="sletknap">Slet annoncen</button></a>
+    </form>
   
     `
             });

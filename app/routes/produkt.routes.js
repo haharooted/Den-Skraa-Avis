@@ -13,6 +13,14 @@ module.exports = app => {
     router.post("/", produkter.createProdukt);
     //router.put("/", produkter.updateProdukt);
 
+    router.get("/deleteproduct/:id", produkter.delete);
+
+    router.get("/followProdukt", produkter.followProdukt);
+    router.get("/unfollowProdukt", produkter.unfollowProdukt);
+    router.get("/followedProdukt/:brugerId", produkter.followedProdukt);
+
+
+
     app.use('/api/produkter', router);
   };
   

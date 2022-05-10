@@ -34,23 +34,23 @@ module.exports = (sequelize, Sequelize) => {
     }, 
     createdAt: {
       type: Sequelize.DATE,
-      get(dato) {
+      /*get(dato) {
         let datoToFix = this.getDataValue('createdAt')
         let formattedDato = datoToFix.getDate()+'-'+(datoToFix.getMonth()+1)+'-'+datoToFix.getFullYear();
         let tid = datoToFix.getHours() + ":" + datoToFix.getMinutes() + ":" + datoToFix.getSeconds();
         let formattedDateTime = formattedDato+' '+tid;
         return formattedDateTime;
-      }
+      }*/
     },
     updatedAt: {
       type: Sequelize.DATE,
-      get(dato) {
+      /*get(dato) {
         let datoToFix = this.getDataValue('createdAt')
         let formattedDato = datoToFix.getFullYear()+'-'+datoToFix.getDate()+'-'+(datoToFix.getMonth()+1);
         let tid = datoToFix.getHours() + ":" + datoToFix.getMinutes() + ":" + datoToFix.getSeconds();
         let formattedDateTime = formattedDato+' '+tid;
         return formattedDateTime;
-      }
+      }*/
   }},
     {
       getterMethods: {

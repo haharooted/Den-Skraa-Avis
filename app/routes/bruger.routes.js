@@ -3,9 +3,6 @@ module.exports = app => {
 
   var router = require("express").Router();
 
-  // Følg produkt
-  router.post("/brugerFollowProdukt", brugere.brugerFollowProdukt);
-
   // Find bruger by id og returner data
   router.get("/checkbruger/:id", brugere.findOne);
 
@@ -30,7 +27,7 @@ module.exports = app => {
 
 
   // Retrieve all published Brugere
-  router.get("/published", brugere.findAllPublished);
+  router.get("/findAllBrugere", brugere.findAllBrugere);
 
   // Retrieve a single Bruger with id
   router.get("/:id", brugere.findOne);
@@ -39,7 +36,13 @@ module.exports = app => {
   router.put("/:id", brugere.updateBruger);
 
   // Delete a Bruger with id
-  router.delete("/:id", brugere.deleteBruger);
+  router.get("/sletbruger/:id", brugere.deleteBruger);
+
+  // Upgrade user
+  router.get("/upgradeBruger/:id", brugere.upgradeBruger);
+
+  // Upgrade user
+  router.get("/degradeBruger/:id", brugere.degradeBruger);
 
   // Delete all Brugere
   router.delete("/", brugere.deleteAll);

@@ -30,8 +30,13 @@ db.produkter.belongsTo(db.brugere);
 
 
 // mange til mange dreng
-db.brugere.belongsToMany(db.produkter, {through: 'brugere2produkter'})
-db.produkter.belongsToMany(db.brugere, {through: 'brugere2produkter'})
+
+db.sequelize.define('brugere2produkters', {
+
+}, {timestamps: false});
+
+db.brugere.belongsToMany(db.produkter, {through: 'brugere2produkters'})
+db.produkter.belongsToMany(db.brugere, {through: 'brugere2produkters'})
 module.exports = db;
 
 

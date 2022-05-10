@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 //temp += "<br>Kategori: " + annonce.kategori
                 temp += '<br><a href=""><img src="./uploads/' + annonce.billedeUrl + '" alt="icon" width="300px" height="300px" class=""/></a>'
                 temp += "</li>"
+                temp += `<a href="http://localhost:1337/api/produkter/followprodukt?brugerId=${brugerTilId.id}&produktId=${annonce.id}"><button class="makegold">Følg annonce</button></a>`
+                
               });
               document.getElementById('tilføjItem').innerHTML = temp;
             }
