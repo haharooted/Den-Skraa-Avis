@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     location.href = "./login.html"
   } else {
     let id = brugerTilId.id
-    fetch(`http://localhost:1338/api/brugere/checkbruger/${id}`, {
+    fetch(`http://localhost:1337/api/brugere/checkbruger/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

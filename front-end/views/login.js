@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async (e) => {
       };
   
   
-      await fetch("http://localhost:1338/api/brugere/brugerLogin", {
+      await fetch("http://localhost:1337/api/brugere/brugerLogin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

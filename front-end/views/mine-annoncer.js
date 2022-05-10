@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     location.href = "./login.html";
   } else {
     let id = brugerTilId.id;
-    fetch(`http://localhost:1338/api/brugere/checkbruger/${id}`, {
+    fetch(`http://localhost:1337/api/brugere/checkbruger/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       });
   }
 
-  fetch(`http://localhost:1338/api/getAnnoncerOprettetAf/${bruger.id}`).then(
+  fetch(`http://localhost:1337/api/getAnnoncerOprettetAf/${bruger.id}`).then(
     res => {
       res.json().then(
         data => {
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             data.forEach((annonce) => {
               temp += `<form ref='uploadForm' 
               id='uploadForm' 
-              action='http://localhost:1338/opdaterannonce' 
+              action='http://localhost:1337/opdaterannonce' 
               method='post' 
               accept='image/*'
               maxfilesize='10000000'
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         <br>
         <hr>
     </form>
-    <a href="http://localhost:1338/api/sletAnnonce/${annonce.id}"><button class="sletknap">Slet annoncen</button></a>
+    <a href="http://localhost:1337/api/sletAnnonce/${annonce.id}"><button class="sletknap">Slet annoncen</button></a>
 
   
     `

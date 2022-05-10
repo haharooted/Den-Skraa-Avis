@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     location.href = "./login.html";
   } else {
     let id = brugerTilId.id;
-    fetch(`http://localhost:1338/api/brugere/checkbruger/${id}`, {
+    fetch(`http://localhost:1337/api/brugere/checkbruger/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       });
   }
 
-  fetch(`http://localhost:1338/api/brugere/checkbruger/${bruger.id}`).then((res) => {
+  fetch(`http://localhost:1337/api/brugere/checkbruger/${bruger.id}`).then((res) => {
     res.json().then((data) => {
       let temp = "";
 
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       id: brugerLocal.id,
     };
 
-    fetch("http://localhost:1338/api/brugere/opdaterbruger", {
+    fetch("http://localhost:1337/api/brugere/opdaterbruger", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("sletbrugerknap").addEventListener("click", (e) => {
     e.preventDefault();
     let id = brugerTilId.id;
-    fetch(`http://localhost:1338/api/brugere/sletbruger/${id}`, {
+    fetch(`http://localhost:1337/api/brugere/sletbruger/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

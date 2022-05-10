@@ -4,7 +4,7 @@ const path = require('path')
 const app = express();
 
 var corsOptions = {
-  origin: "*"
+  origin: "http://localhost:1337"
 };
 
 app.use(cors(corsOptions));
@@ -53,7 +53,7 @@ app.use(express.static(path.join(__dirname, '/front-end/public')))
 
 
 // lyt på porten efter requests
-const PORT = process.env.PORT || 1338;
+const PORT = process.env.PORT || 1337;
 app.listen(PORT, () => {
   console.log(`Server kører på port: ${PORT}.`);
 });

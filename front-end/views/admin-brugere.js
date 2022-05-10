@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     location.href = "./login.html"
 } else {
     let id = brugerTilId.id
-    fetch(`http://localhost:1338/api/brugere/checkbruger/${id}`, {
+    fetch(`http://localhost:1337/api/brugere/checkbruger/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           location.href = "./login.html"
         });
     }
-   /*fetch(`http://localhost:1338/api/admin/allebrugere`).then(
+   /*fetch(`http://localhost:1337/api/admin/allebrugere`).then(
       res => {
         res.json().then(
           data => {
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         )
       }
     )*/
-    fetch(`http://localhost:1338/api/admin/allebrugere`).then(
+    fetch(`http://localhost:1337/api/admin/allebrugere`).then(
     res => {
       res.json().then(
         data => {
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
               let datoFormateret = new Date(datoDel[0], datoDel[1] - 1, datoDel[2].substr(0,2));
               temp += `<form ref='uploadForm' 
               id='uploadForm' 
-              action='http://localhost:1338/api/admin/opdaterbruger' 
+              action='http://localhost:1337/api/admin/opdaterbruger' 
               method='post' 
               <label> Bruger UUID: ${bruger.uuid}</label>
               <br>
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         <input id="submitknap" type='submit' value='Opdater bruger' />
         <br>
         </form>
-        <a href="http://localhost:1338/api/admin/sletbruger/${bruger.uuid}">
+        <a href="http://localhost:1337/api/admin/sletbruger/${bruger.uuid}">
         <button class="sletknap" type="button">Slet bruger</button></a>
         `
         if(bruger.is_Guldbruger) {
