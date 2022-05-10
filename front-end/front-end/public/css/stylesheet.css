@@ -1,0 +1,224 @@
+
+/* Navigation bar */ 
+body {
+    background-color: #0c1f30;
+    font-family: sans-serif;
+  }  
+  .statistik-table {
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+    color:#DDEEEE;
+    padding: 5px 10px;
+    font: normal 24px Arial, sans-serif;
+}
+.statistik-table thead th {
+    background-color: #DDEFEF;
+    border: solid 1px #DDEEEE;
+    color: #336B6B;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+    padding: 5px 10px;
+
+}
+.statistik-table tbody td {
+    border: solid 1px #DDEEEE;
+    color: rgb(245, 245, 245);
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+}
+
+
+  .makenormal {
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 300px;
+    background-color: #720b31;
+    color: white;
+  }
+
+  .makegold {
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 300px;
+    background-color: #ecbd14;
+    color: white;
+  }
+
+  .sletknap {
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 300px;
+    background-color: #db2e0f;
+    color: white;
+  }
+  
+  input[type=text], input[type=email], input[type=tel], input[type=number], select {
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    width : 300px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  
+  input[type=submit] {
+    width: 300px;
+    background-color: #53bb57;
+    color: white;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  input[type=submit]:hover {
+    background-color: #40aa45;
+  }
+  
+
+
+  .dropdown ul, .dropdown li {
+    margin: 0;
+    padding: 0;
+  }
+  .dropdown ul {
+    background: gray;
+    list-style: none;
+    width: 100%;
+
+  }
+  .dropdown li {
+    float: left;
+    position: relative;
+    width:auto;
+  }
+  .dropdown a {
+    -webkit-transition: all .25s ease;
+    -moz-transition: all .25s ease;
+    -ms-transition: all .25s ease;
+    -o-transition: all .25s ease;
+    transition: all .25s ease;
+    background: #30A6E6;
+    color: #FFFFFF;
+    display: block;
+    font: bold 12px/20px sans-serif;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .dropdown li:hover a {
+    background: #000000;
+  }
+  #undermenu {
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 35px;
+    visibility: hidden;
+    z-index: 1;
+  }
+  li:hover ul#undermenu {
+    opacity: 1;
+    top: 40px;	/* adjust this as per top nav padding top & bottom comes */
+    visibility: visible;
+  }
+  #undermenu li {
+    float: none;
+    width: 100%;
+  }
+  #undermenu a:hover {
+    background: #DF4B05;
+  }
+  #undermenu a {
+    background-color:#000000;
+  }
+
+
+
+  /* Til liste/gitter visning knapper */
+
+  .filterknapper {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .listevisning,
+  .gittervisning {
+    color: white;
+    border: 1px solid white;
+    padding: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .listevisning:hover,
+  .gittervisning:hover {
+    background: white;
+    color: #0e2439;
+  }
+  
+  .listevisning {
+    margin-right: 10px;
+  }
+  
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  li {
+    border-radius: 3px;
+    margin-bottom: 10px;
+    transition: 0.3s;
+    background-color: #1f364d;
+    color: white;
+  }
+
+  form {
+    color: white;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    transition: 0.3s;
+  }
+  h3 {
+    color: white;
+  }
+  
+  
+  .list.listevisning-filter {
+    flex-direction: column;
+  }
+  
+  .list.listevisning-filter li {
+    padding: 10px;
+  }
+  .list.listevisning-filter form {
+    padding: 10px;
+  }
+  
+  .list.gittervisning-filter {
+    flex-flow: row wrap;
+  }
+  
+  .list.gittervisning-filter li {
+    width: calc(50% - 210px);
+    padding: 100px;
+    margin-right: 10px;
+    text-align: center;
+  }

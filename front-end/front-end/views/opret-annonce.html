@@ -1,0 +1,82 @@
+<head>
+  <link rel="stylesheet" href="./css/stylesheet.css">
+  <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+  <title>Opret annonce</title>
+</head>
+<a href="./"> <img alt="Logo" src="./img/image.png"width="300" height="70"></a> 
+<nav class="dropdown">
+<ul>
+ <li><a href="./">Forside</a></li>
+  <li><a href="#">Profil</a>
+    <ul id="undermenu">
+      <li><a href="./opret-bruger.html">Opret bruger</a></li>
+      <li><a href="./login.html">Login</a></li>
+      <li><a href="./profil.html">Min profil</a></li>
+    </ul>
+  </li>
+  <li><a href="#">Markedsplads</a>
+    <ul id="undermenu">
+      <li><a href="./annoncer.html">Vis annoncer</a></li>
+      <li><a href="./opret-annonce.html">Opret annonce</a></li>
+      <li><a href="./mine-annoncer.html">Mine annoncer</a></li>
+    </ul>
+  </li>
+</ul>
+</nav>
+
+<br>
+<br>
+    <form ref='uploadForm' 
+      id='uploadForm' 
+      action='http://localhost:1338/opretannonce' 
+      method='post' 
+      accept='image/*'
+      maxfilesize='10000000'
+      encType="multipart/form-data">
+      <h3>Opret annonce</h3>
+        <label for="titel">Titel: </label>
+        <br>
+        <input type="text" name="titel" required/>
+        <br>
+        <label for="pris" required>Pris (i kr.): </label>
+        <br>
+        <input type="number" name="pris" required/>
+        <br>
+        <label for="beskrivelse">Beskrivelse: </label>
+        <br>
+        <input type="text" name="beskrivelse" required/>
+        <br>
+        <label for="kategori" required>Vælg en kategori:</label>
+        <br>
+        <select id="kategori" name="kategori" required>
+          <optgroup label="Hjemmet">
+            <option value="Møbler">Møbler</option>
+            <option value="Boliger">Boliger</option>
+          </optgroup>
+          <optgroup label="Hobby">
+            <option value="Livsstil">Livsstil</option>
+            <option value="Sport">Sport</option>
+          </optgroup>
+          <optgroup label="Køretøjer">
+            <option value="Cykler">Cykler</option>
+            <option value="Motorcykler">Motorcykler</option>
+            <option value="Biler">Biler</option>
+          </optgroup>
+          <optgroup label="Tøj">
+            <option value="Jakker">Jakker</option>
+            <option value="Bukser">Bukser</option>
+            <option value="sko">Sko</option>
+          </optgroup>
+          <optgroup label="Diverse">
+            <option value="Andet">Andet</option>
+          </optgroup>
+        </select>
+        <br>
+        <input id="oprettetAfId" type="hidden" value="" name="oprettetAfId"/>
+        <br>
+        <input type="file" name="billedeFil" required/>
+        <br>
+        <input id="submitknap" type='submit' value='Upload annonce' />
+    </form>
+
+    <script src="opret-annonce.js"></script>

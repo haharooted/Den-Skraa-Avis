@@ -1,0 +1,52 @@
+<head>
+  <link rel="stylesheet" href="./css/stylesheet.css">
+  <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+  <title>Opret bruger</title>
+</head>
+<a href="./"> <img alt="Logo" src="./img/image.png"width="300" height="70"></a> 
+<nav class="dropdown">
+<ul>
+ <li><a href="./">Forside</a></li>
+  <li><a href="#">Profil</a>
+    <ul id="undermenu">
+      <li><a href="./opret-bruger.html">Opret bruger</a></li>
+      <li><a href="./login.html">Login</a></li>
+      <li><a href="./profil.html">Min profil</a></li>
+    </ul>
+  </li>
+  <li><a href="#">Markedsplads</a>
+    <ul id="undermenu">
+      <li><a href="./annoncer.html">Vis annoncer</a></li>
+      <li><a href="./opret-annonce.html">Opret annonce</a></li>
+      <li><a href="./mine-annoncer.html">Mine annoncer</a></li>
+    </ul>
+  </li>
+</ul>
+</nav>
+<br>
+<br>  
+<form id="form">
+  <h3>Opret bruger</h3>
+    <input type="email" placeholder="Email" id="email" required />
+    <br>
+    <input type="text" placeholder="Navn" id="navn" required/>
+    <br>
+    <input type="tel" placeholder="Telefon" id="telefon"
+       pattern="[0-9]{8}"
+       required>
+    <br>
+    <input type="text" placeholder="Password" id="password" required />
+    <br>
+    <select id="lokation" required>
+      <option value="1">Sjælland</option>
+      <option value="2">Midtjylland</option>
+      <option value="3">Nordjylland</option>
+      <option value="4">Syddanmark</option>
+      <option value="5">Bornholm</option>
+    </select>
+    <br>
+    <input value="Opret bruger" type="submit" />
+  </form>
+
+  <script src="./opret-bruger.js"></script>
+

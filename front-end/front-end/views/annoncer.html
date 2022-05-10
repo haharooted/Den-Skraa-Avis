@@ -1,0 +1,64 @@
+<head>
+  <link rel="stylesheet" href="./css/stylesheet.css">
+  <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+  <title>Annoncer</title>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/matter-js@0.17.1/build/matter.min.js"></script>
+  <!--<script type="text/javascript" src="https://sc420.github.io/jellify-ur-website/js/jellify.js"></script>-->
+</head>
+<a href="./"> <img alt="Logo" src="./img/image.png"width="300" height="70"></a> 
+<nav class="dropdown">
+<ul>
+ <li><a href="./">Forside</a></li>
+  <li><a href="#">Profil</a>  
+    <ul id="undermenu">
+      <li><a href="./opret-bruger.html">Opret bruger</a></li>
+      <li><a href="./profil.html">Min profil</a></li>
+    </ul>
+  </li>
+  <li><a href="#">Markedsplads</a>
+    <ul id="undermenu">
+      <li><a href="./annoncer.html">Vis annoncer</a></li>
+      <li><a href="./opret-annonce.html">Opret annonce</a></li>
+      <li><a href="./mine-annoncer.html">Mine annoncer</a></li>
+    </ul>
+  </li>
+</ul>
+</nav>
+<br>
+<br><br>
+<form>
+<label for="kategori">Vælg en kategori:</label>
+<select name="kategori" id="kategori" onchange="opdaterKategori()">
+    <option selected="selected" value="" color="grey">Alle</option>
+      <optgroup label="Hjemmet">
+        <option value="Møbler">Møbler</option>
+        <option value="Boliger">Boliger</option>
+      </optgroup>
+      <optgroup label="Hobby">
+        <option value="Livsstil">Livsstil</option>
+        <option value="Sport">Sport</option>
+      </optgroup>
+      <optgroup label="Køretøjer">
+        <option value="Cykler">Cykler</option>
+        <option value="Motorcykler">Motorcykler</option>
+        <option value="Biler">Biler</option>
+      </optgroup>
+      <optgroup label="Tøj">
+        <option value="Jakker">Jakker</option>
+        <option value="Bukser">Bukser</option>
+        <option value="sko">Sko</option>
+      </optgroup>
+      <optgroup label="Diverse">
+        <option value="Andet">Andet</option>
+      </optgroup>
+    </select>
+</form>
+
+  <div id="container">
+    <ol id="tilføjItem" class="list listevisning-filter">
+  </div>
+
+  
+  
+<script src="annoncer.js"></script>
