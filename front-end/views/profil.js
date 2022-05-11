@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     e.preventDefault();
 
     const email = document.getElementById("email").value;
-    //const lokation = document.getElementById("lokation").value;
+    const lokation = document.getElementById("lokation").value;
     const navn = document.getElementById("navn").value;
     const telefon = document.getElementById("telefon").value;
     const password = document.getElementById("password").value;
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const brugerInfo = {
       email: email,
       password: password,
-      //lokation: lokation,
+      lokation: lokation,
       navn: navn,
       telefon: telefon,
       id: brugerLocal.id,
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("sletbrugerknap").addEventListener("click", (e) => {
     e.preventDefault();
     let id = brugerTilId.id;
-    fetch(`http://localhost:1337/api/brugere/sletbruger/${id}`, {
+     fetch(`http://localhost:1337/api/brugere/sletbruger/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -107,15 +107,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .then((response) => {
         if (response) {
           localStorage.removeItem("bruger")
+          window.alert("Bruger blev slettet, redirecter til forsiden...")
           location.href = "login.html"
         } else {
-          window.alert("Bruger slettet")
-          localStorage.removeItem("bruger")
+          window.alert("Bruger ikke slettet, der skete en fejl")
         }
       })
-      .catch(() => {
-        window.alert("Bruger slettet")
-        localStorage.removeItem("bruger")
+      .catch( (err) => {
+        window.alert("Bruger ikke slettet, der skete en fejl: " + err)
       });
 
   });

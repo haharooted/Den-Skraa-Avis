@@ -17,7 +17,8 @@ const Op = db.Sequelize.Op;
         email: req.body.email,
         password: req.body.password,
         navn: req.body.navn,
-        telefon: req.body.telefon
+        telefon: req.body.telefon,
+        lokationId: req.body.lokation
       };
         // Save Produkt in the database
         Bruger.create(bruger)
@@ -25,6 +26,7 @@ const Op = db.Sequelize.Op;
           res.send(data);
         })
       .catch(err => {
+        console.log(err)
         res.status(500).send({
           message:
             err.message || "Der skete en fejl ved oprettelse."
@@ -130,8 +132,8 @@ exports.updateBruger = (req, res) => {
     password: req.body.password,
     navn: req.body.navn,
     telefon: req.body.telefon,
+    lokation: req.body.lokation
   };
-  
   let id = req.body.id
   Bruger.update(bruger, {
     where: { id: id }

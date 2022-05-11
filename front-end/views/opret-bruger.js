@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async (e) => {
       const bruger = {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value, 
-        //lokation: document.getElementById("lokation").value,
+        lokation: document.getElementById("lokation").value,
         navn: document.getElementById("navn").value,
         telefon: document.getElementById("telefon").value
       };
