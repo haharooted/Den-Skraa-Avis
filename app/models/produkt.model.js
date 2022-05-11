@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false
     },
     pris: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: false
     },
     beskrivelse: {

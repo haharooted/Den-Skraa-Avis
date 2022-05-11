@@ -10,7 +10,8 @@ module.exports = (sequelize, Sequelize) => {
     email: {
       type: Sequelize.STRING,
       isEmail: true,
-      allowNull: false
+      allowNull: false,
+      //unique: true
     },
     password: {
       type: Sequelize.STRING,
@@ -31,6 +32,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     }, 
+    is_Admin: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
     createdAt: {
       type: Sequelize.DATE,
       /*get(dato) {

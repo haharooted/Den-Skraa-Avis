@@ -3,8 +3,9 @@ const Produkt = db.produkter;
 const Op = db.Sequelize.Op;
 const fileUpload = require('express-fileupload');
 const path = require('path');
-const { brugere, produkter } = require("../models");
+const { brugere, produkter, kategorier } = require("../models");
 const {QueryTypes} = require('sequelize');
+const { REPL_MODE_SLOPPY } = require("repl");
 
 
 
@@ -87,6 +88,7 @@ exports.createProdukt = (req, res) => {
     pris: req.body.pris,
     beskrivelse: req.body.beskrivelse,
     billedeUrl: billedeUrl,
+    kategoriId: req.body.kategori
   };
   let id = req.body.id
   
@@ -100,7 +102,9 @@ exports.createProdukt = (req, res) => {
     pris: produkt.pris, 
     beskrivelse: produkt.beskrivelse, 
     billedeUrl: produkt.billedeUrl,
-    brugerId: id
+    brugerId: id,
+    kategoriId: produkt.kategoriId
+
   }, {
   })
   .then(data => {
@@ -173,6 +177,24 @@ exports.updateProdukt = (req, res) => {
   });
 };
 
+exports.getProdukterAll = (req, res) => {
+  db.sequelize.query(`
+  SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori
+FROM produkts as p
+LEFT JOIN brugers as b
+ON p.brugerId = b.id
+LEFT JOIN lokations as l
+ON b.lokationId = l.id
+LEFT JOIN kategoris as k
+ON p.kategoriId = k.id
+  `, { type: QueryTypes.SELECT })
+  .then(data => {
+    res.status(200).send(data)
+  })
+  .catch(err => {
+    res.status(400).send("Der skete en fejl: " + err)
+  })
+}
 //get alle produkter
 exports.getProdukter = (req, res) => {
   Produkt.findAll()
@@ -189,18 +211,65 @@ exports.getProdukter = (req, res) => {
 
 // get produkter by kategori
 exports.getProdukterByKategori = (req, res) => {
-  const inputKategori = req.params.kategori;
   
-  Produkt.findAll({ where: {kategori: inputKategori} })
-  .then(data => {
-    res.send(data);
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-      err.message || "Some error occurred while retrieving produkter."
+  
+  const inputKategori = req.query.kategori;
+  const inputLokation = req.query.lokation;
+  
+  if(inputKategori == 0 && inputLokation != 0) {
+    /*db.sequelize.query(`
+    SELECT *
+    FROM produkts
+    LEFT JOIN brugers
+    ON produkts.brugerId = brugers.id
+    WHERE brugers.lokationId = ${inputLokation}
+    `, { type: QueryTypes.SELECT })*/
+    db.sequelize.query(`
+    SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori
+  FROM produkts as p
+  LEFT JOIN brugers as b
+  ON p.brugerId = b.id
+  LEFT JOIN lokations as l
+  ON b.lokationId = l.id
+  LEFT JOIN kategoris as k
+  ON p.kategoriId = k.id
+  WHERE b.lokationId = ${inputLokation}
+    `, { type: QueryTypes.SELECT })
+    .then(data => {
+      res.status(200).send(data)
+    })
+    .catch(err => {
+      res.status(400).send("Der skete en fejl: " + err)
+    })
+  }; 
+
+  if(inputKategori == 0 && inputLokation == 0) {
+    Produkt.findAll()
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+        err.message || "Der skete en fejl ved at fetche produkter."
+      });
     });
-  });
+  } 
+
+  if(inputKategori != 0 && inputLokation == 0) {
+    Produkt.findAll({where: {kategoriId: inputKategori}})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+        err.message || "Der skete en fejl ved at fetche produkter."
+      });
+    });
+  } else {
+    res.send("fejl")
+  }
 };
 
 exports.getProdukterById = (req, res) => {

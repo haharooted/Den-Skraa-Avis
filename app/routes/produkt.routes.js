@@ -5,9 +5,11 @@ module.exports = app => {
   
     // Get produkter
     router.get("/getprodukter", produkter.getProdukter);
+    router.get("/getprodukterall", produkter.getProdukterAll);
+
   
     // Get produkter by kategori
-    router.get("/getprodukterbykategori/:kategori", produkter.getProdukterByKategori);
+    router.get("/getprodukterbykategori/", produkter.getProdukterByKategori);
 
     // Opret produkt
     router.post("/", produkter.createProdukt);
