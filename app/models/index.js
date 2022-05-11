@@ -20,14 +20,29 @@ db.sequelize = sequelize;
 
 db.brugere = require("./bruger.model.js")(sequelize, Sequelize);
 db.produkter = require("./produkt.model.js")(sequelize, Sequelize);
+db.lokationer = require("./lokation.model.js")(sequelize, Sequelize);
+db.kategorier = require("./kategori.model")(sequelize, Sequelize);
+// Bruger <> Produkter
 db.brugere.hasMany(db.produkter, {
-  onDelete: 'CASCADE',
+  Delete: 'CASCADE',
   foreignKey: {allowNulls: false},
-  hooks: true
 });
 db.produkter.belongsTo(db.brugere);
 
+// Lokationer -> Brugere
+db.lokationer.hasMany(db.brugere, {
+  Delete: 'CASCADE',
+  foreignKey: {allowNulls: false},
+  hooks: true
+});
+db.brugere.belongsTo(db.lokationer);
 
+db.kategorier.hasMany(db.produkter, {
+  Delete: 'CASCADE',
+  foreignKey: {allowNulls: false},
+  hooks: true
+});
+db.produkter.belongsTo(db.kategorier);
 
 // mange til mange dreng
 

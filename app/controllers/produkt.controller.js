@@ -9,18 +9,20 @@ const {QueryTypes} = require('sequelize');
 
 
 
-// Follow produkt
+// Follow produkt - indsæt i m:m junction table at bruger følger annonce
+// Input -> req.query.brugerId, req.query.produkt.Id 
 exports.followProdukt = (req, res) => {
   let brugerId = req.query.brugerId
   let produktId = req.query.produktId
-  
+
   // Indsæt ny relation i db
-  db.sequelize.query(`INSERT INTO brugere2produkters (brugerId, produktId) VALUES (${brugerId}, ${produktId})`, { type: QueryTypes.INSERT })
+  db.sequelize.query(`INSERT INTO brugere2produkters (brugerId, produktId) 
+  VALUES (${brugerId}, ${produktId})`, { type: QueryTypes.INSERT })
   .then(data => {
-    res.send("Du følger nu annoncen!")
+    res.status(200).send("Du følger nu annoncen!")
   })
   .catch(err => {
-    res.send("Der skete en fejl ved at følge annoncen")
+    res.status(400).send("Der skete en fejl ved at følge annoncen")
   })
 };
 

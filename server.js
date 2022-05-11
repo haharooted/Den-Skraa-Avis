@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //sequelize modellerne:
 const db = require("./app/models");
-const { brugere, produkter } = require("./app/models");
+const { brugere, produkter, lokationer, kategorier } = require("./app/models");
 
 
 
@@ -40,9 +40,9 @@ require("./app/routes/produkt.routes")(app);
 
 
 //brugere.destroy({where: {email: "test@test.com"}})
-/*brugere.create({ email: "testmanden@test.com", password: "123", navn: "Jane", telefon: "24438798"});
-produkter.create({ titel: "sej vare", beskrivelse: "123", pris: "orale", brugerId: 1});
-*/
+//brugere.create({ email: "testmanden@test.com", password: "123", navn: "Jane", telefon: "24438798"});
+//produkter.create({ titel: "sej vare", beskrivelse: "123", pris: "orale", billedeUrl: "123", brugerId: 1});
+
 
 // Serve views folderen som static
 app.use(express.static(path.join(__dirname, '/front-end/views/')))

@@ -2,36 +2,35 @@ const db = require("../models");
 const Bruger = db.brugere;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Bruger
-exports.createBruger = (req, res) => {
-  // Validate request
-  /*if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-    return;
-  }*/
-  const bruger = {
-    email: req.body.email,
-    password: req.body.password,
-    navn: req.body.navn,
-    telefon: req.body.telefon
-  };
-  console.log("ny bruger: " + bruger)
-    // Save Produkt in the database
-    Bruger.create(bruger)
-    .then(data => {
-      res.send(data);
-      console.log("save user: " + data)
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Der skete en fejl."
+// Opret ny bruger i db
+  exports.createBruger = (req, res) => {
+    // Validér
+    if (!req.body) {
+      res.status(400).send({
+        message: "Request skal have en body!"
       });
-    });
-  };
-
+      return;
+    }
+      // Gem produkt i database
+      // Bruger.create() opretter bare en INSERT SQL query automatisk (og validerer med modellen)
+      const bruger = {
+        email: req.body.email,
+        password: req.body.password,
+        navn: req.body.navn,
+        telefon: req.body.telefon
+      };
+        // Save Produkt in the database
+        Bruger.create(bruger)
+        .then(data => {
+          res.send(data);
+        })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Der skete en fejl ved oprettelse."
+        });
+      });
+    };
 
 
 // Retrieve all Brugere from the database date descending
@@ -55,7 +54,6 @@ exports.brugerLogin = (req, res) => {
     password: req.body.password
   };
 
-  console.log("input: " + bruger)
   Bruger.findOne({
     where: {
       email: bruger.email,
@@ -75,10 +73,8 @@ exports.findOne = (req, res) => {
   Bruger.findByPk(id)
   .then(data => {
     res.send(data);
-    console.log(data)
   })
   .catch(err => {
-    console.log(err)
     res.status(500).send({
       message: "Fejl ved at finde bruger med id=" + id
     });
@@ -192,7 +188,6 @@ exports.degradeBruger = (req, res) => {
     where: {id: id }
   })
   .then(svar => {
-    console.log(svar)
     if (svar == 1) {
       res.send({
         message: "Bruger blev downgraded."
@@ -210,10 +205,10 @@ exports.degradeBruger = (req, res) => {
   });
 };
 
-// Delete a Bruger with the specified id in the request
+// Slet bruger med specifikt ID i params
 exports.deleteBruger = (req, res) => {
   const id = req.params.id;
-  
+
   Bruger.destroy({
     where: { id: id }
   })

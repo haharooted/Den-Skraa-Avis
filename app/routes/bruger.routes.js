@@ -1,10 +1,11 @@
 module.exports = app => {
   const brugere = require("../controllers/bruger.controller.js");
 
-  var router = require("express").Router();
+  let router = require("express").Router();
 
   // Find bruger by id og returner data
   router.get("/checkbruger/:id", brugere.findOne);
+
 
   router.post("/", brugere.createBruger);
   router.put("/", brugere.updateBruger);

@@ -11,9 +11,9 @@ module.exports = app => {
 
     // Opret produkt
     router.post("/", produkter.createProdukt);
-    //router.put("/", produkter.updateProdukt);
+    router.put("/", produkter.updateProdukt);
 
-    router.get("/deleteproduct/:id", produkter.delete);
+    router.get("/deleteprodukt/:id", produkter.delete);
 
     router.get("/followProdukt", produkter.followProdukt);
     router.get("/unfollowProdukt", produkter.unfollowProdukt);
