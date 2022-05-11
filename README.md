@@ -65,7 +65,7 @@ npm start
 
 
 
-#### Tools
+### Tools
 Til næste gang jeg committer sebastians nemid kodeord fra config filen:
 `
   git filter-branch --force --index-filter \
@@ -73,3 +73,29 @@ Til næste gang jeg committer sebastians nemid kodeord fra config filen:
   --prune-empty --tag-name-filter cat -- --all
   git push --force --verbose --dry-run
   git push --force`
+
+#### SQL Script til at tilføje test brugere, kategorier, lokationer og produkter til databasen
+`
+SET IDENTITY_INSERT lokations ON
+INSERT INTO lokations (id, lokation) VALUES (1,'Sjælland')
+INSERT INTO lokations (id, lokation) VALUES (2,'Midtjylland')
+INSERT INTO lokations (id, lokation) VALUES (3,'Nordjylland')
+INSERT INTO lokations (id, lokation) VALUES (4,'Syddanmark')
+INSERT INTO lokations (id, lokation) VALUES (5,'Bornholm')
+GO
+SET IDENTITY_INSERT lokations OFF
+
+SET IDENTITY_INSERT kategoris ON
+INSERT INTO kategoris (id, kategori) VALUES (1,'Møbler')
+INSERT INTO kategoris (id, kategori) VALUES (2,'Boliger')
+INSERT INTO kategoris (id, kategori) VALUES (3,'Livsstil')
+INSERT INTO kategoris (id, kategori) VALUES (4,'Sport')
+INSERT INTO kategoris (id, kategori) VALUES (5,'Cykler')
+INSERT INTO kategoris (id, kategori) VALUES (6,'Motorcykler')
+INSERT INTO kategoris (id, kategori) VALUES (7,'Biler')
+INSERT INTO kategoris (id, kategori) VALUES (8,'Jakker')
+INSERT INTO kategoris (id, kategori) VALUES (9,'Bukser')
+INSERT INTO kategoris (id, kategori) VALUES (10,'Sko')
+INSERT INTO kategoris (id, kategori) VALUES (11,'Andet')
+GO
+SET IDENTITY_INSERT kategoris OFF
