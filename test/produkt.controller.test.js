@@ -15,7 +15,7 @@ beforeEach( async () => {
     await new Promise(resolve => setTimeout(resolve, 1500));
     console.log("Sover 1,5 sekunder så databasen når at sættes op");
  });
-/*
+
 
 describe('Test produkt API (localhost:1337/api/produkter/~)', () => {
     describe("Test GET request: /api/produkter/getprodukter", () => {
@@ -51,7 +51,7 @@ describe('Test produkt API (localhost:1337/api/produkter/~)', () => {
                 .get("api/produkter/getprodukter")
                 .end((err, res) => {
                     svar = res.body
-                    expect(res.body[0]).to.have.all.keys('pris', 'titel', 'beskrivelse', 'billedeUrl');
+                    expect(res.body[0]).to.have.some.keys('pris', 'titel', 'beskrivelse', 'billedeUrl');
                     done();
                 });
                 
@@ -59,4 +59,4 @@ describe('Test produkt API (localhost:1337/api/produkter/~)', () => {
 
         
     })
-});*/
+});

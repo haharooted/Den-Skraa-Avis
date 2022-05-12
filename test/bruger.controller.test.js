@@ -16,7 +16,7 @@ beforeEach( async () => {
 });
 
 
-// Create user to test with: 
+// Create bruger til at teste med: 
 describe("CREATE USER", () => {  
     describe("POST til /brugere/", () => {                 
         it("Opret bruger i databasen", (done) => {
@@ -108,7 +108,6 @@ describe("POST /login", () => {
         .post('/api/brugere/brugerlogin')
         .send({ email: 'isfhg784', password: 'frank1' })
         .end((err, res) => { 
-            //expect(err).to.be.null;
             expect(res).to.equal(false);
             done();     
         });
