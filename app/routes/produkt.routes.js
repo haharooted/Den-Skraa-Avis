@@ -32,6 +32,7 @@ module.exports = app => {
 
     // Statistik
     router.get("/getstatsusers", produkter.getStatsUsers);
+    router.get("/produktstats", produkter.produktstats);
 
 
 

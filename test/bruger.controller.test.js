@@ -9,123 +9,110 @@ const e = require("express");
 let server = require('../server.js');
 let expect = chai.expect;
 
+// Sov 
+/*beforeEach( async () => {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    console.log("Sover 1,5 sekunder så databasen når at sættes op");
+});*/
 
-setTimeout(function() {
-    // do some setup
-    describe("Get brugere", () => {  
-        describe("GET til /allebrugere", () => {                 
-          it("Log bruger ind med rigtige oplysninger", (done) => {
-            chai.request("http://localhost:1337/api/produkter")
-              .get('/getprodukter')
-              .end((err, res) => { 
-                expect(err).to.be.null;
+
+// Create user to test with: 
+describe("CREATE USER", () => {  
+    describe("POST til /brugere/", () => {                 
+        it("Opret bruger i databasen", (done) => {
+            chai.request("http://localhost:1337/api/")
+            .post('brugere/')
+            .send({ email: 'test@test.com', password: 'brugertest', navn: 'brugertest', lokation: 1, telefon: 24438798,  })
+            .end((err, res) => { 
                 expect(res.status).to.equal(200);
                 done();     
-              });
-          });
+            });
         });
-    });      
-  
-    run();
-  }, 5000);
-
-
-// Først oprettes en bruger, herefter unit testes det om brugeren kan logge ind (krav 4)  
-describe("Opret bruger", () => {  
-    describe("POST til /opretbruger", () => {                 
-      it("Log bruger ind med rigtige oplysninger", (done) => {
-        chai.request("http://localhost:1337/api/brugere")
-          .post('/opretbruger')
-          .send({ email: 'test@test.com', password: 'brugertest', navn: 'brugertest', lokationId: 1, telefon: 24438798,  })
-          .end((err, res) => { 
-            expect(err).to.be.null;
-            expect(res.status).to.equal(200);
-            done();     
-          });
-      });
     });
-});
-describe("Get brugere", () => {  
-    describe("GET til /allebrugere", () => {                 
-      it("Log bruger ind med rigtige oplysninger", (done) => {
-        chai.request("http://localhost:1337/api/produkter")
-          .get('/getprodukter')
-          .end((err, res) => { 
-            expect(err).to.be.null;
-            expect(res.status).to.equal(200);
-            done();     
-          });
-      });
+    
+    
+    
+    
+    // Krav 4
+    describe("Krav 4 - UNIT TEST", () => {  
+        describe("POST brugerlogin", () => {                 
+            it("Logger ind med korrekt info", (done) => {
+                chai.request("http://localhost:1337")
+                .post('/api/brugere/brugerlogin')
+                .send({ email: 'test@test.com', password: 'brugertest' })
+                .end((err, res) => { 
+                    expect(err).to.be.null;
+                    expect(res.body).to.not.be.empty;
+                    expect(res.status).to.equal(200);
+                    done();     
+                });
+            });
+        });
     });
+    describe("Krav 4 - UNIT TEST", () => {  
+        describe("POST brugerlogin", () => {                 
+            it("Logger ind med forkert info", (done) => {
+                chai.request("http://localhost:1337")
+                .post('/api/brugere/brugerlogin')
+                .send({ email: 'eee@eee.com', password: 'eee' })
+                .end((err, res) => { 
+                    expect(err).to.not.be.null;
+                    done();     
+                });
+            });
+        });
+    });
+    
 });
 /*
-// Opret først en bruger:
-describe("Krav 4 test: Login", () => {  
-    describe("POST til /login", () => {                 
-      it("Log bruger ind med rigtige oplysninger", (done) => {
-        agent
-          .post('/login')
-          .send({ email: 'test@1', password: 'test' })
-          .end((err, res) => { 
-            expect(err).to.be.null;
-            expect(res.status).to.equal(200);
-            expect(res.body).to.equal(true);
+
+describe("POST brugerlogin", () => {                 
+    it("Logger ind med forkert bruger", (done) => {
+        chai.request("http://localhost:1337")
+        .post('/api/brugere/brugerlogin')
+        .send({ email: 'yogo@yogo.yogo', password: 'yogo' })
+        .end((err, res) => {
+            expect(res).to.equal(true);
             done();     
-          });
-      });
+        });
     });
 });
 
-describe("Krav ...", () => {
-    describe("Test opretBruger POST request: /api/opretBruger", () => {
-      it("Skal oprette ny bruger", (done) => {
-        const bruger = {
-          email: "unittest@gmail.com",
-          password: "test",
-          lokation: "Sjælland",
-          navn: "testbruger",
-          telefon: "38849384",
-        };
-        chai
-          .request("http://localhost:1337/")
-          .post("api/opretBruger")
-          .send(bruger)
-          .end((err, res) => {
-            res.should.have.status(200);
-            done();
-          });
-      });
+describe("POST /brugerlogin", () => {                 
+    it("Logger ind med tomme felter", (done) => {
+        chai.request("http://localhost:1337")
+        .post('/api/brugere/brugerlogin')
+        .send({ email: '', password: '' })
+        .end((err, res) => {
+            expect(err).to.be.null;
+            expect(res).to.equal(false);
+            
+            done();     
+        });
     });
-    describe("Test at brugeren bliver oprettet i databasen", () => {
-      it("Oprettes i databasen", (done) => {
-        chai
-          .request("http://localhost:1337/")
-          .get("api/getBrugerByEmail/unittest@gmail.com")
-          .end((err, res) => {
-            res.should.have.status(200);
-            done();
-          });
-      });
+});
+describe("POST /login", () => {                 
+    it("Logger ind med forkert password", (done) => {
+        chai.request("http://localhost:1337")
+        .post('/api/brugere/brugerlogin')
+        .send({ email: 'frank@hvam.dk', password: 'yolo' })
+        .end((err, res) => { 
+            expect(err).to.be.null;
+            expect(res).to.equal(false);
+            done();     
+        });
     });
-    describe("Test at brugeren kan slettes i databasen", () => {
-      it("Slettes i databasen, test: /api/sletBruger", (done) => {
-        chai
-          .request("http://localhost:1337/")
-          .get("api/sletBrugerByEmail/unittest@gmail.com")
-          .end((err, res) => {
-            res.should.have.status(200);
-            done();
-          });
-      });
-      it("Test at brugeren rent faktisk er slettet i db.json", (done) => {
-          chai
-          .request("http://localhost:1337/")
-          .get("api/getBrugerByEmail/unittest@gmail.com")
-          .end((err, res) => {
-              const email = "unittest@gmail.com"
-              JSON.stringify(Database.getBrugerByEmail(email)).should.be.eq("true")
-          done();
-          });
-      });
+});
+describe("POST /login", () => {                 
+    it("Logger ind med korrekt password og en forkert email", (done) => {
+        chai.request("http://localhost:1337")
+        .post('/api/brugere/brugerlogin')
+        .send({ email: 'isfhg784', password: 'frank1' })
+        .end((err, res) => { 
+            //expect(err).to.be.null;
+            expect(res).to.equal(false);
+            done();     
+        });
     });
-  });*/
+});
+});*/

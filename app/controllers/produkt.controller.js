@@ -264,6 +264,24 @@ ORDER BY p.updatedAt DESC
 }
 
 // Statistik
+
+
+exports.produktstats = (req, res) => {
+  db.sequelize.query(`
+  SELECT COUNT(produkts.brugerId) as antal_annoncer, brugers.navn
+FROM produkts
+LEFT JOIN brugers
+ON produkts.brugerId = brugers.id
+GROUP BY brugers.navn
+  `, { type: QueryTypes.SELECT })
+  .then(data => {
+    res.status(200).send(data)
+  })
+  .catch(err => {
+    res.status(400).send("Der skete en fejl: " + err)
+  })
+}
+
 exports.getStats = (req, res) => {
   db.sequelize.query(`
   SELECT COUNT(produkters) as antal_annoncer, users.navn
@@ -451,7 +469,7 @@ exports.update = (req, res) => {
         message: "Produkt was updated successfully."
       });
     } else {
-      res.send({
+      res.status(400).send({
         message: `Cannot update Produkt with id=${id}`
       });
     }

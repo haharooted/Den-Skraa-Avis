@@ -62,10 +62,14 @@ exports.brugerLogin = (req, res) => {
       password: bruger.password}
     })
   .then(data => {
-    res.send(data)
+    if (data == null) {
+      res.status(400)
+    } else {
+      res.status(200).send(data)
+    }
   })
   .catch(err => {
-    res.send(err)
+    res.status(400).send(err)
   });
 };
 
@@ -232,6 +236,7 @@ exports.deleteBruger = (req, res) => {
     });
   });
 };
+
 
 // Find alle brugere
 exports.findAllBrugere = (req, res) => {

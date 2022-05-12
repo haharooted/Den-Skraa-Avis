@@ -39,21 +39,24 @@
     <h3>
       Annoncer pr. bruger:
     </h3>
-    <table class="selec">
+    <table class="statistik-table">
       <thead><tr><td><b>Annoncer</b></td>&#160;<td><b>Bruger</b></td></tr></thead>
       <tr id="root"></tr>
+    </table>
   </div>
   <br>
   <h3 id="antalbrugere"></h3>
   <br>
   <script>
-      fetch(`http://localhost:1337/api/produkter/produkterannoncer`).then(
+fetch(`http://localhost:1337/api/produkter/produktstats`).then(
       res => {
         res.json().then(
           data => {
             if (data.length > 0) {
+              console.log(data)
               var root = document.getElementById('root');
               data.forEach(element => root.insertAdjacentHTML('beforebegin', `<tr><td>${element.antal_annoncer}</td><td>${element.navn}</td></tr>`));
+              console.log(data);
             }
           }
         )
