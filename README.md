@@ -99,4 +99,4 @@ INSERT INTO kategoris (id, kategori) VALUES (10,'Sko')
 INSERT INTO kategoris (id, kategori) VALUES (11,'Andet')
 GO
 SET IDENTITY_INSERT kategoris OFF
-
+`
