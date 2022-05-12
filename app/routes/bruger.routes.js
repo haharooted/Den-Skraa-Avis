@@ -5,6 +5,7 @@ module.exports = app => {
 
   // Find bruger ud fra id og returner data
   router.get("/checkbruger/:id", brugere.findOne);
+  router.get("/checkadmin/:id", brugere.findOne);
 
 
   router.post("/", brugere.createBruger);

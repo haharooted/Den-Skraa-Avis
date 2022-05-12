@@ -10,10 +10,10 @@ let server = require('../server.js');
 let expect = chai.expect;
 
 // Sov 
-/*beforeEach( async () => {
+beforeEach( async () => {
     await new Promise(resolve => setTimeout(resolve, 1500));
     console.log("Sover 1,5 sekunder så databasen når at sættes op");
-});*/
+});
 
 
 // Create user to test with: 
@@ -63,8 +63,7 @@ describe("CREATE USER", () => {
         });
     });
     
-});
-/*
+
 
 describe("POST brugerlogin", () => {                 
     it("Logger ind med forkert bruger", (done) => {
@@ -115,4 +114,4 @@ describe("POST /login", () => {
         });
     });
 });
-});*/
+});

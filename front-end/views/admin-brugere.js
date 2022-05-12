@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     location.href = "./login.html"
 } else {
     let id = brugerTilId.id
-    fetch(`http://localhost:1337/api/brugere/checkbruger/${id}`, {
+    fetch(`http://localhost:1337/api/brugere/checkadmin/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         .then((response) => {
           if (response) {
               console.log("Logget ind");
+              
           } else {
             location.href = "./login.html"
         }
@@ -37,6 +38,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
               <label> Bruger ID: ${bruger.id}</label>
               <br>
               <label> Bruger guld-status: ${bruger.is_Guldbruger}</label>
+              <br>
+              <label> Bruger admin-status: ${bruger.is_Admin}</label>
               <br>
               <label> Bruger oprettelsesdato: ${bruger.createdAt}</label>
               <br>

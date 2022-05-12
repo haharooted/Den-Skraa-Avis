@@ -86,6 +86,19 @@ exports.findOne = (req, res) => {
     });
   });
 };
+exports.findOneAdmin = (req, res) => {
+  const id = req.params.id;
+  Bruger.findOne({where: {
+    id: id,
+    is_Admin: true
+  }})
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send(false)
+    });
+};
 
 // Find bruger med en email
 exports.getBrugerByEmail = (req, res) => {
