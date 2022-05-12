@@ -1,3 +1,4 @@
+// Default config file - fyld din egen information ind
 module.exports = {
     HOST: "varmserver.database.windows.net",
     USER: "sebastian",

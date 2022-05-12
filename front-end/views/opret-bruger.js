@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async (e) => {
         .then((response) => {
           if (response.ok) {
             location.href = "/login.html";
-            window.alert("Du er nu oprettet")
+            window.alert("Du er nu oprettet, redirecter til login-siden")
           } else {
             window.alert("Der skete en fejl ved oprettelse af brugeren");
           }

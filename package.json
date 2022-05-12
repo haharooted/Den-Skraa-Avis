@@ -4,7 +4,7 @@
   "description": "Den Skrå Avis!",
   "main": "server.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --timeout 10000"
   },
   "repository": {
     "type": "git",

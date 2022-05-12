@@ -60,14 +60,12 @@ exports.followedProdukt = (req, res) => {
   })
 };
 // Nyt produkt
-// Create and Save a new produkt
 exports.createProdukt = (req, res) => {
   
   let billedeFil = req.files.billedeFil;
   let uploadSti;
-  
-  
-  // Validate request
+
+  // Valider
   if (!req.body) {
     res.status(400).send({
       message: "Body kan ikke være tom!"
@@ -90,11 +88,7 @@ exports.createProdukt = (req, res) => {
     billedeUrl: billedeUrl,
     kategoriId: req.body.kategori
   };
-  let id = req.body.id
-  
-  
-  // Flyt billede til uploads folderen (/public/uploads)
-  
+  let id = req.body.id  
   
   // Save Produkt in the database
   Produkt.create({
@@ -126,57 +120,69 @@ exports.createProdukt = (req, res) => {
 
 //Opdater produkt
 exports.updateProdukt = (req, res) => {
-  
-  let billedeFil = req.files.billedeFil;
-  let uploadSti;
-  
-  
-  // Validate request
-  if (!req.body) {
-    res.status(400).send({
-      message: "Body kan ikke være tom!"
-    });
-    return;
-  }
-  
+  // Find ud af om produktet skal opdateres uden billede
   if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send('Venligst vedhæft et billede af din vare.');
-  }
-  // Brug md5 hash til filnavngivning og definer uploadSti og billedeUrl
-  let md5Hash = billedeFil.md5
-  let extension = path.extname(billedeFil.name)
-  uploadSti = './front-end/public/uploads/' + md5Hash + extension;
-  const billedeUrl = md5Hash + extension
-  const produkt = {
-    titel: req.body.titel,
-    pris: req.body.pris,
-    beskrivelse: req.body.beskrivelse,
-    billedeUrl: billedeUrl,
-    id: req.body.id
+    console.log("Intet billede vedhæftet, brug original");
+    let id = req.body.id
+    const produkt = {titel: req.body.titel, pris: req.body.pris, billedeUrl: req.body.billedeUrl, 
+      kategoriId: req.body.kategori, beskrivelse: req.body.beskrivelse, brugerId: req.body.brugerId}
+      Produkt.update(produkt, {
+        where: { id: id }
+      })
+      .then(
+        res.send("Produkt opdateret: " + req.body.titel + " med beskrivelsen: " + req.body.beskrivelse)
+      )
+      .catch(err => {
+        console.log(err)
+        res.status(404)
+      })
+  } else {
+    let billedeFil = req.files.billedeFil;
+    let uploadSti;
+    let md5Hash = billedeFil.md5
+    let extension = path.extname(billedeFil.name)
+    uploadSti = './front-end/public/uploads/' + md5Hash + extension;
+    const billedeUrl = md5Hash + extension
+    const produkt = {
+      titel: req.body.titel,
+      pris: req.body.pris,
+      beskrivelse: req.body.beskrivelse,
+      billedeUrl: billedeUrl,
+      kategoriId: req.body.kategori,
+      brugerId: req.body.brugerId
+    };
+    let id = req.body.id  
+    
+    // Gem produkt i databasen
+    Produkt.create({
+      titel: produkt.titel, 
+      pris: produkt.pris, 
+      beskrivelse: produkt.beskrivelse, 
+      billedeUrl: produkt.billedeUrl,
+      brugerId: id,
+      kategoriId: produkt.kategoriId
+  
+    }, {
+    })
+    .then(data => {
+      billedeFil.mv(uploadSti, function(fejl) {
+        if (fejl) {
+          return res.status(500).send(fejl);
+        } else {
+          res.send("Produkt opdateret: " + req.body.titel + " med beskrivelsen: " + req.body.beskrivelse)
+        }
+      });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+        err.message || "Der skete en fejl."
+      });
+    });
   };
-  
-  // Flyt billede til uploads folderen (/public/uploads)
-  
-  
-  // Save Produkt in the database
-  Produkt.create(produkt)
-  .then(data => {
-    billedeFil.mv(uploadSti, function(fejl) {
-      if (fejl) {
-        return res.status(500).send(fejl);
-      } else {
-        res.status(200).send('Annonce er lagt op!');
-      }
-    });
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-      err.message || "Der skete en fejl."
-    });
-  });
 };
 
+// Alle produkter inkl. relationstabeller
 exports.getProdukterAll = (req, res) => {
   db.sequelize.query(`
   SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori
@@ -187,6 +193,7 @@ LEFT JOIN lokations as l
 ON b.lokationId = l.id
 LEFT JOIN kategoris as k
 ON p.kategoriId = k.id
+ORDER BY is_guldbruger DESC
   `, { type: QueryTypes.SELECT })
   .then(data => {
     res.status(200).send(data)
@@ -195,7 +202,113 @@ ON p.kategoriId = k.id
     res.status(400).send("Der skete en fejl: " + err)
   })
 }
-//get alle produkter
+
+exports.getprodukterallsortpris = (req, res) => {
+  db.sequelize.query(`
+  SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori
+FROM produkts as p
+LEFT JOIN brugers as b
+ON p.brugerId = b.id
+LEFT JOIN lokations as l
+ON b.lokationId = l.id
+LEFT JOIN kategoris as k
+ON p.kategoriId = k.id
+ORDER BY p.pris DESC
+  `, { type: QueryTypes.SELECT })
+  .then(data => {
+    res.status(200).send(data)
+  })
+  .catch(err => {
+    res.status(400).send("Der skete en fejl: " + err)
+  })
+}
+
+exports.getprodukterallsortdate = (req, res) => {
+  db.sequelize.query(`
+  SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori
+FROM produkts as p
+LEFT JOIN brugers as b
+ON p.brugerId = b.id
+LEFT JOIN lokations as l
+ON b.lokationId = l.id
+LEFT JOIN kategoris as k
+ON p.kategoriId = k.id
+ORDER BY p.createdAt DESC
+  `, { type: QueryTypes.SELECT })
+  .then(data => {
+    res.status(200).send(data)
+  })
+  .catch(err => {
+    res.status(400).send("Der skete en fejl: " + err)
+  })
+}
+
+exports.getprodukterallsorteditdate = (req, res) => {
+  db.sequelize.query(`
+  SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori
+FROM produkts as p
+LEFT JOIN brugers as b
+ON p.brugerId = b.id
+LEFT JOIN lokations as l
+ON b.lokationId = l.id
+LEFT JOIN kategoris as k
+ON p.kategoriId = k.id
+ORDER BY p.updatedAt DESC
+  `, { type: QueryTypes.SELECT })
+  .then(data => {
+    res.status(200).send(data)
+  })
+  .catch(err => {
+    res.status(400).send("Der skete en fejl: " + err)
+  })
+}
+
+// Statistik
+exports.getStats = (req, res) => {
+  db.sequelize.query(`
+  SELECT COUNT(produkters) as antal_annoncer, users.navn
+            FROM products
+            LEFT JOIN users
+            ON products.oprettetAfId = users.uuid
+            GROUP BY users.brugerId
+            ORDER BY antal_annoncer DESC
+  `, { type: QueryTypes.SELECT })
+  .then(data => {
+    res.status(200).send(data)
+  })
+  .catch(err => {
+    res.status(400).send("Der skete en fejl: " + err)
+  })
+}
+exports.getStatsUsers = (req, res) => {
+  db.sequelize.query(`
+  SELECT COUNT(id) AS antalBrugere FROM brugers
+  `, { type: QueryTypes.SELECT })
+  .then(data => {
+    res.send(data)
+    console.log(data)
+  })
+  .catch(err => {
+    res.status(400).send("Der skete en fejl: " + err)
+  })
+}
+
+// Find produkter ud fra brugerid
+exports.getProdukterByBrugerId = (req, res) => {
+  Produkt.findAll({where: {brugerId: req.params.id}},
+    {include: kategorier})
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+      err.message || "Der skete en fejl ved at finde brugere brugere."
+    });
+  });
+}
+
+// Get alle produkter
 exports.getProdukter = (req, res) => {
   Produkt.findAll()
   .then(data => {
@@ -209,23 +322,35 @@ exports.getProdukter = (req, res) => {
   });
 };
 
-// get produkter by kategori
+// Get produkter by kategori & lokation
 exports.getProdukterByKategori = (req, res) => {
   
-  
-  const inputKategori = req.query.kategori;
-  const inputLokation = req.query.lokation;
-  
-  if(inputKategori == 0 && inputLokation != 0) {
-    /*db.sequelize.query(`
-    SELECT *
-    FROM produkts
-    LEFT JOIN brugers
-    ON produkts.brugerId = brugers.id
-    WHERE brugers.lokationId = ${inputLokation}
-    `, { type: QueryTypes.SELECT })*/
+  const inputKategori = req.params.kategori;
+  const inputLokation = req.params.lokation;
+  console.log("kategori: " + inputKategori + "lokation: " + inputLokation)
+
+  if (inputKategori != 0 && inputLokation != 0) {
     db.sequelize.query(`
-    SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori
+    SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, b.lokationId, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori, p.kategoriId
+  FROM produkts as p
+  LEFT JOIN brugers as b
+  ON p.brugerId = b.id
+  LEFT JOIN lokations as l
+  ON b.lokationId = l.id
+  LEFT JOIN kategoris as k
+  ON p.kategoriId = k.id
+  WHERE b.lokationId = ${inputLokation} AND p.kategoriId = ${inputKategori}
+    `, { type: QueryTypes.SELECT })
+    .then(data => {
+      res.send(data)
+    })
+    .catch(err => {
+      res.status(400)
+    })
+  } 
+  if (inputKategori == 0 && inputLokation != 0) {
+    db.sequelize.query(`
+    SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, b.lokationId, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori, p.kategoriId
   FROM produkts as p
   LEFT JOIN brugers as b
   ON p.brugerId = b.id
@@ -236,40 +361,51 @@ exports.getProdukterByKategori = (req, res) => {
   WHERE b.lokationId = ${inputLokation}
     `, { type: QueryTypes.SELECT })
     .then(data => {
-      res.status(200).send(data)
+      res.send(data)
     })
     .catch(err => {
-      res.status(400).send("Der skete en fejl: " + err)
+      res.status(400)
     })
-  }; 
-
-  if(inputKategori == 0 && inputLokation == 0) {
-    Produkt.findAll()
+  } 
+  if (inputKategori != 0 && inputLokation == 0) {
+    db.sequelize.query(`
+    SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, b.lokationId, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori, p.kategoriId
+  FROM produkts as p
+  LEFT JOIN brugers as b
+  ON p.brugerId = b.id
+  LEFT JOIN lokations as l
+  ON b.lokationId = l.id
+  LEFT JOIN kategoris as k
+  ON p.kategoriId = k.id
+  WHERE p.kategoriId = ${inputKategori}
+    `, { type: QueryTypes.SELECT })
     .then(data => {
-      res.send(data);
+      res.send(data)
     })
     .catch(err => {
-      res.status(500).send({
-        message:
-        err.message || "Der skete en fejl ved at fetche produkter."
-      });
-    });
+      res.status(400)
+    })
+  } 
+  if (inputKategori == 0 && inputLokation == 0) {
+    db.sequelize.query(`
+    SELECT b.id as bruger_id, b.email, b.password, b.navn, b.telefon, b.is_guldbruger, b.createdAt, b.updatedAt, l.lokation, p.id as produkt_id, p.titel, b.lokationId, p.pris, p.beskrivelse, p.billedeUrl, p.createdAt, p.updatedAt, p.brugerId, k.kategori, p.kategoriId
+  FROM produkts as p
+  LEFT JOIN brugers as b
+  ON p.brugerId = b.id
+  LEFT JOIN lokations as l
+  ON b.lokationId = l.id
+  LEFT JOIN kategoris as k
+  ON p.kategoriId = k.id
+    `, { type: QueryTypes.SELECT })
+    .then(data => {
+      res.send(data)
+    })
+    .catch(err => {
+      res.status(400)
+    })
   } 
 
-  if(inputKategori != 0 && inputLokation == 0) {
-    Produkt.findAll({where: {kategoriId: inputKategori}})
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-        err.message || "Der skete en fejl ved at fetche produkter."
-      });
-    });
-  } else {
-    res.send("fejl")
-  }
+
 };
 
 exports.getProdukterById = (req, res) => {
@@ -287,26 +423,7 @@ exports.getProdukterById = (req, res) => {
   });
 };
 
-
-
-// Retrieve all Produkter from the database.
-exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  
-  Produkt.findAll({ where: condition })
-  .then(data => {
-    res.send(data);
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-      err.message || "Some error occurred while retrieving produkter."
-    });
-  });
-};
-
-// Find a single Produkt with an id
+// Find et produkt ud fra id (primary key)
 exports.findOne = (req, res) => {
   const id = req.params.id;
   
@@ -321,7 +438,7 @@ exports.findOne = (req, res) => {
   });
 };
 
-// Update a Produkt by the id in the request
+// Opdater et produkt
 exports.update = (req, res) => {
   const id = req.params.id;
   
@@ -346,7 +463,7 @@ exports.update = (req, res) => {
   });
 };
 
-// Delete a Produkt with the specified id in the request
+// Slet et produkt ud fra id
 exports.delete = (req, res) => {
   const id = req.params.id;
   
@@ -367,37 +484,6 @@ exports.delete = (req, res) => {
   .catch(err => {
     res.status(500).send({
       message: "Kunne ikke slette produkt med id=" + id
-    });
-  });
-};
-
-// Delete all Produkter from the database.
-exports.deleteAll = (req, res) => {
-  Produkt.destroy({
-    where: {},
-    truncate: false
-  })
-  .then(nums => {
-    res.send({ message: `${nums} Produkter were deleted successfully!` });
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-      err.message || "Some error occurred while removing all produkter."
-    });
-  });
-};
-
-// find all published Produkt
-exports.findAllPublished = (req, res) => {
-  Produkt.findAll({ where: { published: true } })
-  .then(data => {
-    res.send(data);
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-      err.message || "Some error occurred while retrieving produkter."
     });
   });
 };

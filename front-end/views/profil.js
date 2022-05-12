@@ -28,21 +28,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
   fetch(`http://localhost:1337/api/brugere/checkbruger/${bruger.id}`).then((res) => {
     res.json().then((data) => {
       let temp = "";
-
       temp += "<li>Navn: " + data.navn;
       temp += "<br>Email: " + data.email;
       temp += "<br>Password: " + data.password;
-      //temp += "<br>Lokation: " + data.lokation;
       temp += "<br>Telefon: " + data.telefon;
       temp += "<br>Dato for oprettelse: " + data.createdAt;
-      if (!data.createdAt === data.updatedAt) {
-        temp += "<br>Sidst redigeret: " + data.updatedAt;
-      }
+      temp += "<br>Sidst redigeret: " + data.updatedAt;
       temp += "</li>";
 
       document.getElementById("email").value = data.email;
       document.getElementById("password").value = data.password;
-      //document.getElementById("lokation").value = data.lokation;
+      document.getElementById("lokation").value = data.lokationId;
       document.getElementById("navn").value = data.navn;
       document.getElementById("telefon").value = data.telefon;
 

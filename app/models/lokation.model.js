@@ -1,3 +1,4 @@
+// Lokation model
 module.exports = (sequelize, Sequelize) => {
   const Lokation = sequelize.define("lokation", {
     lokation: {

@@ -49,7 +49,7 @@ exports.findAllDateDesc = (req, res) => {
   });
 };
 
-// Retrieve all Brugere from the database date descending
+//Logind bruger
 exports.brugerLogin = (req, res) => {
   const bruger = {
     email: req.body.email,
@@ -69,7 +69,7 @@ exports.brugerLogin = (req, res) => {
   });
 };
 
-// Find a single Bruger with an id
+// Find en bruger med ID
 exports.findOne = (req, res) => {
   const id = req.params.id;
   Bruger.findByPk(id)
@@ -83,7 +83,7 @@ exports.findOne = (req, res) => {
   });
 };
 
-// Find bruger with an email
+// Find bruger med en email
 exports.getBrugerByEmail = (req, res) => {
   const inputEmail = req.params.email;
   Bruger.findAll({ where: {email: inputEmail}})
@@ -98,8 +98,7 @@ exports.getBrugerByEmail = (req, res) => {
   });
 };
 
-// Delete bruger with an email
-
+// Slet bruger kun med en email
 exports.deleteBrugerWithEmail = (req, res) => {
   const inputEmail = req.params.email;
   
@@ -124,21 +123,22 @@ exports.deleteBrugerWithEmail = (req, res) => {
   });
 };
 
-// Update a Bruger by the id in the request
-
+// Opdater en bruger ud fra id i request
 exports.updateBruger = (req, res) => {
   const bruger = {
     email: req.body.email,
     password: req.body.password,
     navn: req.body.navn,
     telefon: req.body.telefon,
-    lokation: req.body.lokation
+    lokationId: req.body.lokation
   };
+  console.log(bruger)
   let id = req.body.id
   Bruger.update(bruger, {
     where: { id: id }
   })
   .then(num => {
+    console.log("num: " + num)
     if (num == 1) {
       res.send({
         message: "Bruger blev opdateret."
@@ -151,11 +151,12 @@ exports.updateBruger = (req, res) => {
   })
   .catch(err => {
     res.status(500).send({
-      message: "Fejl ved at opdatere id=" + id
+      message: "Fejl ved at opdatere id=" + id + err
     });
   });
 };
 
+//Opgrader bruger -> til gold
 exports.upgradeBruger = (req, res) => {
   let id = req.params.id
   Bruger.update({
@@ -181,7 +182,7 @@ exports.upgradeBruger = (req, res) => {
   });
 };
 
-// Downgrade bruger
+// Downgrade bruger til normalt medlem
 exports.degradeBruger = (req, res) => {
   let id = req.params.id
   Bruger.update({
@@ -232,24 +233,7 @@ exports.deleteBruger = (req, res) => {
   });
 };
 
-// Delete all Brugere from the database.
-exports.deleteAll = (req, res) => {
-  Bruger.destroy({
-    where: {},
-    truncate: false
-  })
-  .then(nums => {
-    res.send({ message: `${nums} Brugere were deleted successfully!` });
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-      err.message || "Some error occurred while removing all brugere."
-    });
-  });
-};
-
-// find all published Bruger
+// Find alle brugere
 exports.findAllBrugere = (req, res) => {
   Bruger.findAll()
   .then(data => {

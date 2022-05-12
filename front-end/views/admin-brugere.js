@@ -23,26 +23,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           location.href = "./login.html"
         });
     }
-   /*fetch(`http://localhost:1337/api/admin/allebrugere`).then(
-      res => {
-        res.json().then(
-          data => {
-            if (data.length > 0) {
-              var temp = "";
-              data.forEach((bruger) => {
-                temp += "<li>Navn: " + bruger.navn
-                temp += "<br>Email: " + bruger.email
-                temp += "<br>Password: " + bruger.password
-                temp += "<br>Oprettelsesdato: " + bruger.dato
-                temp += "<br>Lokation: " + bruger.lokation
-                temp += "</li>"
-              });
-              document.getElementById('tilføjItem').innerHTML = temp;
-            }
-          }
-        )
-      }
-    )*/
     fetch(`http://localhost:1337/api/brugere/findAllBrugere`).then(
     res => {
       res.json().then(
@@ -52,13 +32,14 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             data.forEach((bruger) => {
               temp += `<form ref='uploadForm' 
               id='uploadForm' 
-              action='http://localhost:1337/api/admin/opdaterbruger' 
+              action='http://localhost:1337/api/brugere/updatebruger' 
               method='post' 
               <label> Bruger ID: ${bruger.id}</label>
               <br>
               <label> Bruger guld-status: ${bruger.is_Guldbruger}</label>
               <br>
               <label> Bruger oprettelsesdato: ${bruger.createdAt}</label>
+              <br>
               <br>
               <label for="titel">Navn: </label>
         <br>

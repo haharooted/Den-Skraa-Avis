@@ -11,11 +11,11 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       isEmail: true,
       allowNull: false,
-      //unique: true
+      unique: true
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
       /*set(value) {
         this.setDataValue('password', hash(value));
       }*/
@@ -58,10 +58,6 @@ module.exports = (sequelize, Sequelize) => {
   }},
     {
       getterMethods: {
-        getOprettelsesDato() {
-          //dato = this.getDataValue('createdAt')
-          //return dato.toLocaleDateString();
-        }
       }
     })
   return Bruger;

@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       });
   }
 
-  fetch(`http://localhost:1337/api/getAnnoncerOprettetAf/${bruger.id}`).then(
+  fetch(`http://localhost:1337/api/produkter/getprodukterbybrugerid/${bruger.id}`).then(
     res => {
       res.json().then(
         data => {
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             data.forEach((annonce) => {
               temp += `<form ref='uploadForm' 
               id='uploadForm' 
-              action='http://localhost:1337/api/brugere' 
+              action='http://localhost:1337/api/produkter/updateprodukt' 
               method='post' 
               accept='image/*'
               maxfilesize='10000000'
@@ -55,29 +55,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
         <br>
         <select id="kategori" name="kategori" value="${annonce.kategori}" required>
           <optgroup label="Hjemmet">
-            <option value="Møbler">Møbler</option>
-            <option value="Boliger">Boliger</option>
+            <option value="1">Møbler</option>
+            <option value="2">Boliger</option>
           </optgroup>
           <optgroup label="Hobby">
-            <option value="Livsstil">Livsstil</option>
-            <option value="Sport">Sport</option>
+            <option value="3">Livsstil</option>
+            <option value="4">Sport</option>
           </optgroup>
           <optgroup label="Køretøjer">
-            <option value="Cykler">Cykler</option>
-            <option value="Motorcykler">Motorcykler</option>
-            <option value="Biler">Biler</option>
+            <option value="5">Cykler</option>
+            <option value="6">Motorcykler</option>
+            <option value="7">Biler</option>
           </optgroup>
           <optgroup label="Tøj">
-            <option value="Jakker">Jakker</option>
-            <option value="Bukser">Bukser</option>
-            <option value="sko">Sko</option>
+            <option value="8">Jakker</option>
+            <option value="9">Bukser</option>
+            <option value="10">Sko</option>
           </optgroup>
           <optgroup label="Diverse">
-            <option value="Andet">Andet</option>
+            <option value="11">Andet</option>
           </optgroup>
         </select>
         <br>
         <input id="id" type="hidden" value="${annonce.id}" name="id"/>
+        <input id="brugerId" type="hidden" value="${brugerTilId.id}" name="brugerId"/>
         <br>
         <a href=""><img src="./uploads/${annonce.billedeUrl}" alt="icon" width="300px" height="300px"></a>
         <br>

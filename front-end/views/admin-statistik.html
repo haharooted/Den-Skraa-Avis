@@ -10,10 +10,9 @@
 <a href="./"> <img alt="Logo" src="./img/image.png"width="300" height="70"></a> 
 <nav class="dropdown">
   <ul>
-    <li><a href="./">Forside</a></li>
-    <li><a href="#">Profil</a>  
+   <li><a href="./">Forside</a></li>
+    <li><a href="#">Profil</a>
       <ul id="undermenu">
-        <li><a href="./opret-bruger.html">Opret bruger</a></li>
         <li><a href="./profil.html">Min profil</a></li>
       </ul>
     </li>
@@ -22,6 +21,13 @@
         <li><a href="./annoncer.html">Vis annoncer</a></li>
         <li><a href="./opret-annonce.html">Opret annonce</a></li>
         <li><a href="./mine-annoncer.html">Mine annoncer</a></li>
+        <li><a href="./fulgte-annoncer.html">Fulgte annoncer</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Admin</a>
+      <ul id="undermenu">
+        <li><a href="./admin-brugere.html">Brugere</a></li>
+        <li><a href="./admin-statistik.html">Statistik</a></li>
       </ul>
     </li>
   </ul>
@@ -33,21 +39,35 @@
     <h3>
       Annoncer pr. bruger:
     </h3>
-    <table class="statistik-table">
+    <table class="selec">
       <thead><tr><td><b>Annoncer</b></td>&#160;<td><b>Bruger</b></td></tr></thead>
       <tr id="root"></tr>
-    </table>
   </div>
   <br>
+  <h3 id="antalbrugere"></h3>
+  <br>
   <script>
-      fetch(`http://localhost:1337/api/admin/annoncerbrugere`).then(
+      fetch(`http://localhost:1337/api/produkter/produkterannoncer`).then(
       res => {
         res.json().then(
           data => {
             if (data.length > 0) {
               var root = document.getElementById('root');
               data.forEach(element => root.insertAdjacentHTML('beforebegin', `<tr><td>${element.antal_annoncer}</td><td>${element.navn}</td></tr>`));
-              console.log(data);
+            }
+          }
+        )
+      }
+    )
+    fetch(`http://localhost:1337/api/produkter/getstatsusers`).then(
+      res => {
+        res.json().then(
+          data => {
+            if (data.length > 0) {
+              let tilfoj = document.getElementById('antalbrugere');
+              let temp;
+              temp = "Antal brugere: " + data[0].antalBrugere
+              tilfoj.innerHTML = temp;
             }
           }
         )

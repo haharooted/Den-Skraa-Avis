@@ -1,5 +1,6 @@
 const dbConfig = require("../config/db.config.js");
 
+// Sæt config op ud fra db.config.js
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -22,7 +23,7 @@ db.sequelize = sequelize;
 db.brugere = require("./bruger.model.js")(sequelize, Sequelize);
 db.produkter = require("./produkt.model.js")(sequelize, Sequelize);
 db.lokationer = require("./lokation.model.js")(sequelize, Sequelize);
-db.kategorier = require("./kategori.model")(sequelize, Sequelize);
+db.kategorier = require("./kategori.model.js")(sequelize, Sequelize);
 
 // Bruger <> Produkter
 db.brugere.hasMany(db.produkter, {
@@ -31,7 +32,7 @@ db.brugere.hasMany(db.produkter, {
 });
 db.produkter.belongsTo(db.brugere);
 
-// Lokationer -> Brugere
+// Lokationer <> Brugere
 db.lokationer.hasMany(db.brugere, {
   foreignKey: {allowNulls: false},
   hooks: true
@@ -44,11 +45,11 @@ db.kategorier.hasMany(db.produkter, {
 });
 db.produkter.belongsTo(db.kategorier);
 
-// Mange til mange for at holde øje med at brugere kan følge produkter
-
+// Mange til mange til at brugere kan følge produkter
 db.sequelize.define('brugere2produkters', {
 
 }, {timestamps: false});
+
 
 db.brugere.belongsToMany(db.produkter, {through: 'brugere2produkters'})
 db.produkter.belongsToMany(db.brugere, {through: 'brugere2produkters'})

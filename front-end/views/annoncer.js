@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", async (event) => {
   const bruger = JSON.stringify(localStorage.getItem("bruger"));
   let brugerTilId = JSON.parse(localStorage.getItem("bruger"))
-  let kategori = document.getElementById("kategori").value;
-  let lokation = document.getElementById("lokation").value;
+  event.preventDefault();
 
   if (!brugerTilId) {
     location.href = "./login.html"
@@ -40,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 temp += "<br>Kategori: " + annonce.kategori
                 temp += '<br><a href=""><img src="./uploads/' + annonce.billedeUrl + '" alt="icon" width="300px" height="300px" class=""/></a>'
                 temp += `<br>`
-                temp += `<a href="http://localhost:1337/api/produkter/followprodukt?brugerId=${brugerTilId.id}&produktId=${annonce.id}"><button class="makegold">Følg annonce</button></a>`
+                temp += `<a href="http://localhost:1337/api/produkter/followprodukt?brugerId=${brugerTilId.id}&produktId=${annonce.produkt_id}"><button class="makegold">Følg annonce</button></a>`
                 temp += "</li>"
                 
               });
@@ -53,10 +52,12 @@ document.addEventListener("DOMContentLoaded", async (event) => {
   });
   
   function opdaterKnap() {
+
        valgtKategori = document.getElementById("kategori").value;
        valgtLokation = document.getElementById("lokation").value;
+       let brugerTilId = JSON.parse(localStorage.getItem("bruger"))
 
-      fetch(`http://localhost:1337/api/brugere/getprodukterbykategori/?kategori=${valgtKategori}&lokation=${valgtLokation}`).then(
+      fetch(`http://localhost:1337/api/produkter/getprodukterbykategori/${valgtKategori}/${valgtLokation}`).then(
       res => {
         res.json().then(
           data => {
@@ -65,7 +66,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
               data.forEach((annonce) => {
                 temp += "<li>Titel: " + annonce.titel
                 temp += "<br>Pris: " + annonce.pris + " kr."
-                temp += "<br>Oprettelsesdato: " + annonce.dato
+                temp += "<br>Oprettelsesdato: " + annonce.createdAt
+                temp += "<br>Annonce sidst redigeret: " + annonce.updatedAt
                 temp += "<br>Beskrivelse: " + annonce.beskrivelse
                 temp += "<br>Kategori: " + annonce.kategori
                 temp += '<br><a href=""><img src="./uploads/' + annonce.billedeUrl + '" alt="icon" width="300px" height="300px" class=""/></a>'
@@ -75,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
               });
               document.getElementById('tilføjItem').innerHTML = temp;
             } else {
-                temp = `<h3> Der er ingen annoncer i denne kategori</h3>`
+                temp = `<h3> Der er ingen annoncer i denne søgning</h3>`
                 document.getElementById('tilføjItem').innerHTML = temp;
             }
           }
@@ -84,3 +86,82 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     )
   }
   
+
+  function sortPris() {
+    fetch(`http://localhost:1337/api/produkter/getprodukterallsortpris`).then(
+      res => {
+        res.json().then(
+          data => {
+            if (data.length > 0) {
+              var temp = "";
+              data.forEach((annonce) => {
+                temp += "<li>Titel: " + annonce.titel
+                temp += "<br>Pris: " + annonce.pris + " kr."
+                temp += "<br>Oprettelsesdato: " + annonce.createdAt
+                temp += "<br>Beskrivelse: " + annonce.beskrivelse
+                temp += "<br>Kategori: " + annonce.kategori
+                temp += '<br><a href=""><img src="./uploads/' + annonce.billedeUrl + '" alt="icon" width="300px" height="300px" class=""/></a>'
+                temp += `<br>`
+                temp += `<a href="http://localhost:1337/api/produkter/followprodukt?brugerId=${brugerTilId.id}&produktId=${annonce.produkt_id}"><button class="makegold">Følg annonce</button></a>`
+                temp += "</li>"
+                
+              });
+              document.getElementById('tilføjItem').innerHTML = temp;
+            }
+          }
+        )
+      }
+    )
+  }
+  function sortEditDate() {
+    fetch(`http://localhost:1337/api/produkter/getprodukterallsortEditDate`).then(
+      res => {
+        res.json().then(
+          data => {
+            if (data.length > 0) {
+              var temp = "";
+              data.forEach((annonce) => {
+                temp += "<li>Titel: " + annonce.titel
+                temp += "<br>Pris: " + annonce.pris + " kr."
+                temp += "<br>Oprettelsesdato: " + annonce.createdAt
+                temp += "<br>Beskrivelse: " + annonce.beskrivelse
+                temp += "<br>Kategori: " + annonce.kategori
+                temp += '<br><a href=""><img src="./uploads/' + annonce.billedeUrl + '" alt="icon" width="300px" height="300px" class=""/></a>'
+                temp += `<br>`
+                temp += `<a href="http://localhost:1337/api/produkter/followprodukt?brugerId=${brugerTilId.id}&produktId=${annonce.produkt_id}"><button class="makegold">Følg annonce</button></a>`
+                temp += "</li>"
+                
+              });
+              document.getElementById('tilføjItem').innerHTML = temp;
+            }
+          }
+        )
+      }
+    )
+  }
+  function sortDate() {
+    fetch(`http://localhost:1337/api/produkter/getprodukterallsortdate`).then(
+      res => {
+        res.json().then(
+          data => {
+            if (data.length > 0) {
+              var temp = "";
+              data.forEach((annonce) => {
+                temp += "<li>Titel: " + annonce.titel
+                temp += "<br>Pris: " + annonce.pris + " kr."
+                temp += "<br>Oprettelsesdato: " + annonce.createdAt
+                temp += "<br>Beskrivelse: " + annonce.beskrivelse
+                temp += "<br>Kategori: " + annonce.kategori
+                temp += '<br><a href=""><img src="./uploads/' + annonce.billedeUrl + '" alt="icon" width="300px" height="300px" class=""/></a>'
+                temp += `<br>`
+                temp += `<a href="http://localhost:1337/api/produkter/followprodukt?brugerId=${brugerTilId.id}&produktId=${annonce.produkt_id}"><button class="makegold">Følg annonce</button></a>`
+                temp += "</li>"
+                
+              });
+              document.getElementById('tilføjItem').innerHTML = temp;
+            }
+          }
+        )
+      }
+    )
+  }

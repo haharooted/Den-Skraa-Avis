@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async (event) => {
-  const bruger = JSON.stringify(localStorage.getItem("bruger"));
   let brugerTilId = JSON.parse(localStorage.getItem("bruger"))
   if (!brugerTilId) {
     location.href = "./login.html"
@@ -34,7 +33,6 @@ res => {
           temp += "<br>Pris: " + annonce.pris + " kr."
           temp += "<br>Oprettelsesdato: " + annonce.createdAt
           temp += "<br>Beskrivelse: " + annonce.beskrivelse
-          //temp += "<br>Kategori: " + annonce.kategori
           temp += '<br><a href=""><img src="./uploads/' + annonce.billedeUrl + '" alt="icon" width="300px" height="300px" class=""/></a>'
           temp += "</li>"
           temp += `<a href="http://localhost:1337/api/produkter/unfollowprodukt?brugerId=${brugerTilId.id}&produktId=${annonce.id}"><button class="makenormal">Følg ikke længere annonce</button></a>`

@@ -1,3 +1,4 @@
+// Produkt model
 module.exports = (sequelize, Sequelize) => {
   const Produkt = sequelize.define("produkt", {
     id: {
